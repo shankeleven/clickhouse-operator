@@ -4492,7 +4492,6 @@ metadata:
   namespace: kube-system
   labels:
     clickhouse.altinity.com/chop: 0.26.0
-
 # Template Parameters:
 #
 # NAMESPACE=kube-system
@@ -4745,7 +4744,6 @@ subjects:
   - kind: ServiceAccount
     name: clickhouse-operator
     namespace: kube-system
-
 # Template Parameters:
 #
 # NAMESPACE=kube-system
@@ -5099,6 +5097,18 @@ data:
         network:
           # Default host_regexp to limit network connectivity from outside
           hostRegexpTemplate: "(chi-{chi}-[^.]+\\d+-\\d+|clickhouse\\-{chi})\\.{namespace}\\.svc\\.cluster\\.local$"
+
+        ################################################
+        ##
+        ## Configuration remote_servers section
+        ##
+        ################################################
+        remoteServers:
+          # Split remote_servers XML into multiple ConfigMaps when payload exceeds this threshold.
+          # 600 KiB payload plus XML metadata/wrappers keeps ConfigMap data safely below 1 MiB.
+          remoteServersSplitThresholdBytes: 614400
+          # Maximum number of remote_servers fragments allowed for a CHI reconcile cycle.
+          maxRemoteServersFragments: 100
 
       ################################################
       ##
